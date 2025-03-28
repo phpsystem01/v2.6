@@ -1,0 +1,4744 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Cursos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        /* Sistema de diseño moderno */
+        /* Sistema de diseño moderno */
+:root {
+    /* Colores principales - modo claro */
+    --primary-50: #f0f7ff;
+    --primary-100: #e0effe;
+    --primary-200: #bad8fd;
+    --primary-300: #7eb9fc;
+    --primary-400: #3996f8;
+    --primary-500: #0f74e9;
+    --primary-600: #035ac7;
+    --primary-700: #0447a1;
+    --primary-800: #083d85;
+    --primary-900: #0d356e;
+    --primary-950: #092249;
+    
+    /* Colores neutros - modo claro */
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --gray-950: #030712;
+    
+    /* Colores semánticos */
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #3b82f6;
+    
+    /* Variables de diseño */
+    --sidebar-width: 260px;
+    --topbar-height: 70px;
+    --border-radius: 12px;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Colores de fondo */
+    --bg-color: #ffffff;
+    --sidebar-bg: #ffffff;
+    --topbar-bg: #ffffff;
+    --card-bg: #ffffff;
+    --text-color: var(--gray-800);
+    --text-color-light: var(--gray-600);
+    --text-color-dark: var(--gray-900);
+    --border-color: var(--gray-200);
+}
+
+/* Modo oscuro */
+body.dark-mode {
+    --primary-50: #092249;
+    --primary-100: #0d356e;
+    --primary-200: #083d85;
+    --primary-300: #0447a1;
+    --primary-400: #035ac7;
+    --primary-500: #0f74e9;
+    --primary-600: #3996f8;
+    --primary-700: #7eb9fc;
+    --primary-800: #bad8fd;
+    --primary-900: #e0effe;
+    --primary-950: #f0f7ff;
+    
+    --gray-50: #030712;
+    --gray-100: #111827;
+    --gray-200: #1f2937;
+    --gray-300: #374151;
+    --gray-400: #4b5563;
+    --gray-500: #6b7280;
+    --gray-600: #9ca3af;
+    --gray-700: #d1d5db;
+    --gray-800: #e5e7eb;
+    --gray-900: #f3f4f6;
+    --gray-950: #f9fafb;
+
+    --bg-color: #111827;
+    --sidebar-bg: #1f2937;
+    --topbar-bg: #1f2937;
+    --card-bg: #1f2937;
+    --text-color: #e5e7eb;
+    --text-color-light: #9ca3af;
+    --text-color-dark: #f3f4f6;
+    --border-color: #374151;
+}
+
+/* Reset y estilos base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Tipografía mejorada */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text-color-dark);
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.5rem; }
+
+/* Barra superior mejorada */
+.top-navbar {
+    background-color: var(--topbar-bg);
+    color: var(--text-color);
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow-sm);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--topbar-height);
+    z-index: 1000;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    white-space: nowrap;
+    color: var(--primary-600);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo i {
+    font-size: 1.5rem;
+    color: var(--primary-500);
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--gray-600);
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-right: 1rem;
+    transition: var(--transition);
+}
+
+.menu-toggle:hover {
+    color: var(--primary-600);
+}
+
+.user-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-icon {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    white-space: nowrap;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.user-icon:hover {
+    background-color: var(--gray-100);
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--primary-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-600);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    background-color: var(--card-bg);
+    min-width: 220px;
+    box-shadow: var(--shadow-md);
+    z-index: 100;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.dropdown-menu a {
+    color: var(--text-color);
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    display: block;
+    transition: var(--transition);
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dropdown-menu a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-menu a:hover {
+    background-color: var(--gray-50);
+    color: var(--primary-600);
+}
+
+.dropdown-menu a i {
+    width: 1.25rem;
+    text-align: center;
+    color: var(--text-color-light);
+}
+
+.dropdown-menu a:hover i {
+    color: var(--primary-500);
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    font-size: 0.875rem;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: var(--transition);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.logout-btn:hover {
+    background-color: var(--gray-100);
+    color: var(--text-color-dark);
+}
+
+/* Layout principal */
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+    padding-top: var(--topbar-height);
+}
+
+/* Menú lateral mejorado */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg);
+    color: var(--text-color);
+    padding: 1.5rem 1rem;
+    position: fixed;
+    height: calc(100vh - var(--topbar-height));
+    transform: translateX(-100%);
+    transition: var(--transition);
+    z-index: 999;
+    top: var(--topbar-height);
+    overflow-y: auto;
+    border-right: 1px solid var(--border-color);
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding: 0 0.5rem;
+}
+
+.sidebar h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color-light);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    padding: 0 0.75rem;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    margin-bottom: 0.5rem;
+}
+
+.sidebar ul li a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    font-weight: 500;
+    gap: 0.75rem;
+}
+
+.sidebar ul li a:hover {
+    background-color: var(--primary-50);
+    color: var(--primary-600);
+}
+
+.sidebar ul li a.active {
+    background-color: var(--primary-100);
+    color: var(--primary-700);
+    font-weight: 600;
+}
+
+.sidebar ul li a i {
+    width: 1.25rem;
+    text-align: center;
+    font-size: 1rem;
+    color: var(--text-color-light);
+}
+
+.sidebar ul li a:hover i,
+.sidebar ul li a.active i {
+    color: var(--primary-600);
+}
+
+/* Contenido principal mejorado */
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    margin-left: 0;
+    transition: var(--transition);
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--bg-color);
+}
+
+.sidebar-open .main-content {
+    margin-left: var(--sidebar-width);
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+    .header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.header h1 {
+    font-size: 1.75rem;
+    color: var(--text-color-dark);
+    font-weight: 700;
+}
+
+.header-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    background-color: var(--primary-600);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.9375rem;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    white-space: nowrap;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn:hover {
+    background-color: var(--primary-700);
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+}
+
+.btn i {
+    font-size: 0.875rem;
+}
+
+.btn-secondary {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--gray-50);
+    color: var(--text-color-dark);
+    border-color: var(--gray-400);
+}
+
+.btn-success {
+    background-color: var(--success);
+}
+
+.btn-success:hover {
+    background-color: #0da271;
+}
+
+.btn-danger {
+    background-color: var(--danger);
+}
+
+.btn-danger:hover {
+    background-color: #dc2626;
+}
+
+.btn-warning {
+    background-color: var(--warning);
+}
+
+.btn-warning:hover {
+    background-color: #e68a09;
+}
+
+/* Barra de búsqueda mejorada */
+.search-bar {
+    display: flex;
+    margin-bottom: 1.5rem;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 600px;
+}
+
+@media (min-width: 768px) {
+    .search-bar {
+        flex-direction: row;
+    }
+}
+
+.search-input {
+    flex: 1;
+    position: relative;
+}
+
+.search-input input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 0.9375rem;
+    transition: var(--transition);
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.search-input input:focus {
+    outline: none;
+    border-color: var(--primary-300);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.search-input i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-color-light);
+}
+
+/* Tarjetas de cursos mejoradas */
+.course-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.course-card {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-200);
+}
+
+.course-card-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--primary-600);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-bottom-left-radius: var(--border-radius);
+}
+
+.course-card h3 {
+    margin: 0;
+    font-size: 1.125rem;
+    color: var(--text-color-dark);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.course-card p {
+    margin: 0.5rem 0;
+    color: var(--text-color-light);
+    font-size: 0.875rem;
+    flex: 1;
+    line-height: 1.5;
+}
+
+.course-card .meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--text-color-light);
+    margin: 0.25rem 0;
+}
+
+.course-card .meta i {
+    width: 1rem;
+    color: var(--text-color-light);
+}
+
+.course-card .actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.course-card .actions .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+    flex: 1 0 auto;
+    min-width: 6rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+/* Tablas mejoradas */
+.responsive-table {
+    margin-top: 1.5rem;
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 45rem;
+}
+
+th, td {
+    padding: 1rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.875rem;
+}
+
+th {
+    background-color: var(--gray-50);
+    color: var(--text-color);
+    font-weight: 600;
+    white-space: nowrap;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+td {
+    color: var(--text-color);
+    vertical-align: middle;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background-color: var(--gray-50);
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+}
+
+.status.paid {
+    background-color: #ecfdf5;
+    color: var(--success);
+}
+
+.status.pending {
+    background-color: #fef2f2;
+    color: var(--danger);
+}
+
+.status i {
+    font-size: 0.625rem;
+}
+
+.table-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.table-actions .btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+/* Estadísticas mejoradas */
+.stats {
+    margin-top: 2rem;
+}
+
+.stats h2 {
+    font-size: 1.5rem;
+    color: var(--text-color-dark);
+    margin-bottom: 1.5rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+}
+
+.stat-card h3 {
+    font-size: 0.875rem;
+    color: var(--text-color-light);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.stat-card .value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-color-dark);
+    margin-bottom: 0.5rem;
+}
+
+.stat-card .change {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.change.positive {
+    color: var(--success);
+}
+
+.change.negative {
+    color: var(--danger);
+}
+
+.chart-container {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    margin-top: 1.5rem;
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.chart-container h3 {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 300px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Gráficos de torta */
+.pie-charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+/* Modal mejorado */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal.open {
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 600px;
+    box-shadow: var(--shadow-lg);
+    max-height: 90vh;
+    overflow-y: auto;
+    margin: 1rem;
+    animation: slideUp 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+    font-size: 1.5rem;
+    color: var(--text-color-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.modal-header h2 i {
+    color: var(--primary-500);
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-color-light);
+    cursor: pointer;
+    transition: var(--transition);
+    padding: 0.25rem;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-modal:hover {
+    background-color: var(--gray-100);
+    color: var(--text-color);
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-color);
+    font-size: 0.875rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 0.9375rem;
+    transition: var(--transition);
+    background-color: var(--card-bg);
+    color: var(--text-color);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-300);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Notificaciones mejoradas */
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.notification-item {
+    background-color: var(--card-bg);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--primary-500);
+    position: relative;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.notification-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.notification-item.unread {
+    border-left-color: var(--info);
+    background-color: var(--primary-50);
+}
+
+.notification-item.important {
+    border-left-color: var(--warning);
+}
+
+.notification-item p {
+    margin-bottom: 0.25rem;
+    color: var(--text-color);
+    padding-right: 40px; /* Espacio para los botones */
+}
+
+.notification-item p strong {
+    color: var(--text-color-dark);
+    font-weight: 600;
+}
+
+.notification-item small {
+    color: var(--text-color-light);
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.notification-item small i {
+    font-size: 0.625rem;
+}
+
+.notification-actions {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.notification-actions button {
+    background: none;
+    border: none;
+    color: var(--text-color-light);
+    cursor: pointer;
+    font-size: 0.75rem;
+    padding: 0.25rem;
+    border-radius: 4px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.notification-actions button:hover {
+    background-color: var(--gray-100);
+    color: var(--text-color);
+}
+
+/* Configuración mejorada */
+.settings-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+}
+
+.settings-tabs::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.settings-tab {
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--text-color-light);
+    white-space: nowrap;
+    transition: var(--transition);
+}
+
+.settings-tab:hover {
+    color: var(--text-color);
+}
+
+.settings-tab.active {
+    border-bottom-color: var(--primary-600);
+    color: var(--primary-600);
+}
+
+.settings-tab-content {
+    display: none;
+}
+
+.settings-tab-content.active {
+    display: block;
+}
+
+.settings-form-group {
+    margin-bottom: 2rem;
+}
+
+.settings-form-group h3 {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: var(--text-color-dark);
+    font-weight: 600;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.avatar-container {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: var(--primary-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    border: 3px solid var(--card-bg);
+    box-shadow: var(--shadow-sm);
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    font-size: 2rem;
+    color: var(--primary-500);
+}
+
+.avatar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    position: relative;
+    transition: var(--transition);
+}
+
+.checkbox-item input[type="checkbox"]:checked {
+    background-color: var(--primary-600);
+    border-color: var(--primary-600);
+}
+
+.checkbox-item input[type="checkbox"]:checked::after {
+    content: '\f00c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    color: white;
+    font-size: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.checkbox-item label {
+    font-size: 0.875rem;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+/* Overlay para menú móvil */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    display: none;
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.3s ease;
+}
+
+.sidebar-overlay.open {
+    display: block;
+}
+
+/* Utilidades */
+.hidden {
+    display: none !important;
+}
+
+.section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.section.active {
+    display: block;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 9999px;
+}
+
+.badge-primary {
+    background-color: var(--primary-100);
+    color: var(--primary-700);
+}
+
+.badge-success {
+    background-color: #ecfdf5;
+    color: var(--success);
+}
+
+.badge-warning {
+    background-color: #fffbeb;
+    color: var(--warning);
+}
+
+.badge-danger {
+    background-color: #fef2f2;
+    color: var(--danger);
+}
+
+/* Mini Calendario Adaptable */
+.mini-calendar-container {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    margin-top: 1.5rem;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.mini-calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.mini-calendar-title {
+    font-size: 1.25rem;
+    color: var(--text-color-dark);
+    font-weight: 600;
+}
+
+.mini-calendar-nav {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.mini-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+}
+
+.mini-calendar-day-header {
+    text-align: center;
+    font-weight: 600;
+    padding: 0.5rem 0;
+    color: var(--text-color-light);
+    font-size: 0.75rem;
+}
+
+.mini-calendar-day {
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.875rem;
+}
+
+.mini-calendar-day:hover {
+    background-color: var(--primary-50);
+}
+
+.mini-calendar-day.today {
+    background-color: var(--primary-100);
+    color: var(--primary-700);
+    font-weight: 600;
+}
+
+.mini-calendar-day.selected {
+    background-color: var(--primary-500);
+    color: white;
+}
+
+.mini-calendar-day.other-month {
+    opacity: 0.5;
+}
+
+.mini-calendar-day.has-events::after {
+    content: '';
+    position: absolute;
+    bottom: 0.25rem;
+    width: 0.25rem;
+    height: 0.25rem;
+    border-radius: 50%;
+    background-color: var(--primary-500);
+}
+
+/* Event Cards */
+.event-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.event-card {
+    background-color: var(--card-bg);
+    padding: 1.25rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+    position: relative;
+}
+
+.event-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.event-card.important {
+    border-left: 4px solid var(--danger);
+}
+
+.event-card.class {
+    border-left: 4px solid var(--success);
+}
+
+.event-card.meeting {
+    border-left: 4px solid var(--info);
+}
+
+.event-card.reminder {
+    border-left: 4px solid var(--warning);
+}
+
+.event-card h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    color: var(--text-color-dark);
+}
+
+.event-card p {
+    margin: 0.5rem 0;
+    color: var(--text-color-light);
+    font-size: 0.875rem;
+}
+
+.event-card .meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--text-color-light);
+    margin-top: 0.75rem;
+}
+
+.event-card .meta i {
+    width: 1rem;
+    color: var(--text-color-light);
+}
+
+.event-card .actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    justify-content: flex-end;
+}
+
+/* Selector de color */
+.color-picker {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.color-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: var(--transition);
+}
+
+.color-option.selected {
+    border-color: var(--text-color);
+    transform: scale(1.1);
+}
+
+/* Sección de Certificados */
+.certificate-card {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    margin-bottom: 1.5rem;
+    transition: var(--transition);
+}
+
+.certificate-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.certificate-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.certificate-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-color-dark);
+}
+
+.certificate-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: var(--text-color-light);
+}
+
+.certificate-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.certificate-preview {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin: 1rem 0;
+    background-color: white;
+    text-align: center;
+    position: relative;
+}
+
+.certificate-preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+}
+
+.certificate-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.certificate-template-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.certificate-template {
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+}
+
+.certificate-template:hover {
+    border-color: var(--primary-300);
+}
+
+.certificate-template.selected {
+    border-color: var(--primary-500);
+    background-color: var(--primary-50);
+}
+
+.certificate-template img {
+    width: 100%;
+    height: auto;
+    border-radius: calc(var(--border-radius) - 5px);
+    margin-bottom: 0.5rem;
+}
+
+.certificate-template h4 {
+    margin: 0.5rem 0 0;
+    font-size: 0.9375rem;
+    color: var(--text-color-dark);
+}
+
+/* Media Queries mejoradas */
+@media (min-width: 768px) {
+    .dashboard {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        transform: translateX(0);
+        position: sticky;
+        top: var(--topbar-height);
+        height: calc(100vh - var(--topbar-height));
+    }
+
+    .main-content {
+        margin-left: var(--sidebar-width);
+        padding: 2.5rem;
+    }
+
+    .menu-toggle {
+        display: none;
+    }
+
+    .search-bar {
+        flex-direction: row;
+    }
+
+    .search-input input {
+        border-radius: var(--border-radius) 0 0 var(--border-radius);
+    }
+
+    .search-bar button {
+        border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    }
+}
+
+@media (min-width: 1024px) {
+    .main-content {
+        padding: 3rem;
+    }
+
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .course-card h3 {
+        font-size: 1.25rem;
+    }
+
+    .stats h2 {
+        font-size: 1.75rem;
+    }
+
+    .modal-content {
+        max-width: 640px;
+    }
+}
+
+@media (max-width: 767px) {
+    .sidebar {
+        top: var(--topbar-height);
+    }
+
+    .sidebar-open .sidebar {
+        transform: translateX(0);
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .user-menu {
+        gap: 0;
+    }
+
+    .logout-btn {
+        padding: 0.5rem;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin-left: -10px;
+    }
+
+    .logout-btn i {
+        margin: 0;
+        font-size: 1.1rem;
+    }
+
+    .logout-btn span {
+        display: none;
+    }
+
+    .user-icon span {
+        display: none;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .settings-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+
+    /* Mejoras para tablas en móviles */
+    .responsive-table {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+
+    th, td {
+        padding: 0.75rem;
+    }
+
+    .table-actions {
+        justify-content: flex-start;
+    }
+
+    .table-actions .btn {
+        padding: 0.5rem;
+        font-size: 0.6875rem;
+    }
+
+    /* Mejoras para el calendario en móviles */
+    .mini-calendar-grid {
+        gap: 0.1rem;
+    }
+
+    .mini-calendar-day {
+        padding: 0.3rem;
+        font-size: 0.75rem;
+    }
+
+    .mini-calendar-day-header {
+        font-size: 0.65rem;
+        padding: 0.3rem 0;
+    }
+
+    /* Mejoras para las notificaciones en móviles */
+    .notification-item {
+        padding: 1rem 0.75rem;
+    }
+
+    .notification-actions {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        gap: 0.25rem;
+    }
+
+    .notification-actions button {
+        width: 24px;
+        height: 24px;
+        font-size: 0.65rem;
+    }
+
+    .notification-item p {
+        padding-right: 35px;
+        font-size: 0.875rem;
+    }
+
+    .notification-item small {
+        font-size: 0.7rem;
+    }
+
+    /* Mejoras para el menú de herramientas en móviles */
+    .sidebar ul li a {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .sidebar h2 {
+        font-size: 0.875rem;
+        padding: 0 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-navbar {
+        padding: 0 1rem;
+    }
+
+    .logo {
+        font-size: 1.125rem;
+    }
+
+    .header h1 {
+        font-size: 1.375rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .course-card {
+        padding: 1.25rem;
+    }
+
+    .course-card h3 {
+        font-size: 1.125rem;
+    }
+
+    .course-card .actions .btn {
+        min-width: auto;
+        flex: 1;
+    }
+
+    .certificate-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .certificate-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* Mejoras para centrado y organización */
+.d-flex {
+    display: flex;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-muted {
+    color: var(--text-color-light);
+}
+
+.font-weight-600 {
+    font-weight: 600;
+}
+
+.btn-sm {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+}
+
+/* Mejoras para la sección de pagos */
+.payment-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.payment-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+/* Estilos para la sección de copia de seguridad */
+.backup-section {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    margin-top: 2rem;
+}
+
+.backup-section h2 {
+    font-size: 1.5rem;
+    color: var(--text-color-dark);
+    margin-bottom: 1rem;
+}
+
+.backup-section p {
+    color: var(--text-color-light);
+    margin-bottom: 1.5rem;
+}
+
+.backup-options {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.backup-btn {
+    background-color: var(--primary-600);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.9375rem;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.backup-btn:hover {
+    background-color: var(--primary-700);
+}
+
+.backup-btn i {
+    font-size: 1rem;
+}
+/* Estilos para la sección de reportes */
+.report-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.report-card {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.report-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.report-card h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.125rem;
+    color: var(--text-color-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.report-card p {
+    margin: 0.5rem 0 1rem;
+    color: var(--text-color-light);
+    font-size: 0.875rem;
+}
+
+.report-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.report-filters {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+}
+
+.report-filters h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
+    color: var(--text-color-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.report-preview {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    margin-top: 2rem;
+}
+
+.report-preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.report-preview-header h3 {
+    font-size: 1.125rem;
+    color: var(--text-color-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+}
+
+.password-input-container {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-color-light);
+    cursor: pointer;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación superior mejorada -->
+    <div class="top-navbar">
+        <button class="menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Gestión de Cursos</span>
+        </div>
+        <div class="user-menu">
+            <div class="user-icon">
+                <div class="user-avatar">A</div>
+                <span>Administrador</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="dropdown-menu">
+                <a href="#" onclick="openProfileModal()"><i class="fas fa-user"></i> Mi Perfil</a>
+                <a href="#" onclick="openSettingsModal()"><i class="fas fa-cog"></i> Configuración</a>
+                <a href="#" onclick="openNotificationsModal()"><i class="fas fa-bell"></i> Notificaciones</a>
+                <a href="#"><i class="fas fa-question-circle"></i> Centro de Ayuda</a>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> <span>Cerrar Sesión</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Overlay para el menú móvil -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <div class="dashboard">
+        <!-- Menú lateral mejorado -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>Menú Principal</h2>
+            </div>
+            <ul>
+                <li><a href="#cursos" class="active" onclick="showSection('cursos')"><i class="fas fa-book-open"></i> Cursos</a></li>
+                <li><a href="#estudiantes" onclick="showSection('estudiantes')"><i class="fas fa-users"></i> Estudiantes</a></li>
+                <li><a href="#instructores" onclick="showSection('instructores')"><i class="fas fa-chalkboard-teacher"></i> Instructores</a></li>
+                <li><a href="#pagos" onclick="showSection('pagos')"><i class="fas fa-credit-card"></i> Pagos</a></li>
+                <li><a href="#estadisticas" onclick="showSection('estadisticas')"><i class="fas fa-chart-line"></i> Estadísticas</a></li>
+                <li><a href="#calendario" onclick="showSection('calendario')"><i class="fas fa-calendar-alt"></i> Calendario</a></li>
+                <li><a href="#certificados" onclick="showSection('certificados')"><i class="fas fa-award"></i> Certificados</a></li>
+                <li><a href="#reportes" onclick="showSection('reportes')"><i class="fas fa-file-export"></i> Reportes</a></li>
+                <li><a href="#backup" onclick="showSection('backup')"><i class="fas fa-database"></i> Copia de Seguridad</a></li>
+            </ul>
+            
+            <h2>Herramientas</h2>
+            <ul>
+                <li><a href="#mensajes" onclick="showSection('mensajes')"><i class="fas fa-envelope"></i> Mensajes</a></li>
+              
+            </ul>
+        </div>
+
+        <!-- Contenido principal mejorado -->
+        <div class="main-content" id="mainContent">
+            <!-- Encabezado dinámico -->
+            <div class="header">
+                <h1 id="section-title">Cursos Disponibles</h1>
+                <div class="header-actions">
+                    <button class="btn" id="main-action-button" onclick="openModal()">
+                        <i class="fas fa-plus"></i> Nuevo Curso
+                    </button>
+                </div>
+            </div>
+
+            <!-- Barra de búsqueda única -->
+            <div class="search-bar">
+                <div class="search-input">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Buscar...">
+                </div>
+            </div>
+
+            <!-- Sección de Cursos -->
+            <div id="cursos" class="section active">
+                <div class="course-cards">
+                    <!-- Tarjeta de curso mejorada -->
+                    <div class="course-card">
+                        <span class="course-card-badge">Nuevo</span>
+                        <h3>Curso de HTML5 Moderno</h3>
+                        <p>Aprende los fundamentos de HTML5 y las mejores prácticas para desarrollo web moderno.</p>
+                        <div class="meta">
+                            <i class="fas fa-clock"></i>
+                            <span>4 semanas</span>
+                        </div>
+                        <div class="meta">
+                            <i class="fas fa-user-tie"></i>
+                            <span>Juan Pérez</span>
+                        </div>
+                        <div class="meta">
+                            <i class="fas fa-users"></i>
+                            <span>25 estudiantes</span>
+                        </div>
+                        <div class="actions">
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="course-card">
+                        <h3>Diseño Web con CSS3</h3>
+                        <p>Domina el diseño web responsive con CSS3, Flexbox y Grid Layout para crear interfaces modernas.</p>
+                        <div class="meta">
+                            <i class="fas fa-clock"></i>
+                            <span>5 semanas</span>
+                        </div>
+                        <div class="meta">
+                            <i class="fas fa-user-tie"></i>
+                            <span>María Gómez</span>
+                        </div>
+                        <div class="meta">
+                            <i class="fas fa-users"></i>
+                            <span>18 estudiantes</span>
+                        </div>
+                        <div class="actions">
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Estudiantes -->
+            <div id="estudiantes" class="section">
+                <div class="responsive-table">
+                    <table id="students-table">
+                        <thead>
+                            <tr>
+                                <th>Estudiante</th>
+                                <th>Email</th>
+                                <th>Cursos</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-avatar" style="margin-right: 0.75rem;">AL</div>
+                                        <div>
+                                            <div class="font-weight-600">Ana López</div>
+                                            <small class="text-muted">ID: #ST001</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>ana@example.com</td>
+                                <td>HTML5, CSS3</td>
+                                <td><span class="badge badge-success">Activo</span></td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="btn btn-secondary btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        <button class="btn btn-success btn-sm" onclick="sendCertificate('Ana López')">
+                                            <i class="fas fa-certificate"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-avatar" style="margin-right: 0.75rem;">PM</div>
+                                        <div>
+                                            <div class="font-weight-600">Pedro Martínez</div>
+                                            <small class="text-muted">ID: #ST002</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>pedro@example.com</td>
+                                <td>CSS3, JavaScript</td>
+                                <td><span class="badge badge-success">Activo</span></td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="btn btn-secondary btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        <button class="btn btn-success btn-sm" onclick="sendCertificate('Pedro Martínez')">
+                                            <i class="fas fa-certificate"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sección de Instructores -->
+            <div id="instructores" class="section">
+                <div class="responsive-table">
+                    <table id="instructors-table">
+                        <thead>
+                            <tr>
+                                <th>Instructor</th>
+                                <th>Email</th>
+                                <th>Especialidad</th>
+                                <th>Cursos</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-avatar" style="margin-right: 0.75rem;">JP</div>
+                                        <div>
+                                            <div class="font-weight-600">Juan Pérez</div>
+                                            <small class="text-muted">ID: #IN001</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>juan@example.com</td>
+                                <td>Desarrollo Web</td>
+                                <td>HTML5, CSS3</td>
+                                <td><span class="badge badge-success">Activo</span></td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="btn btn-secondary btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-avatar" style="margin-right: 0.75rem;">MG</div>
+                                        <div>
+                                            <div class="font-weight-600">María Gómez</div>
+                                            <small class="text-muted">ID: #IN002</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>maria@example.com</td>
+                                <td>Diseño Web</td>
+                                <td>CSS3, JavaScript</td>
+                                <td><span class="badge badge-success">Activo</span></td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="btn btn-secondary btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sección de Control de Pagos -->
+            <div id="pagos" class="section">
+                
+                
+                <div class="responsive-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Transacción</th>
+                                <th>Estudiante</th>
+                                <th>Curso</th>
+                                <th>Fecha</th>
+                                <th>Monto</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#TRX001</td>
+                                <td>Ana López</td>
+                                <td>HTML5 Moderno</td>
+                                <td>15/06/2023</td>
+                                <td>$120.00</td>
+                                <td>
+                                    <span class="status pending">
+                                        <i class="fas fa-clock"></i> Pendiente
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="payment-actions">
+                                        <button class="btn btn-success btn-sm" onclick="markAsPaid('Ana López')">
+                                            <i class="fas fa-check"></i> Marcar como Pagado
+                                        </button>
+                                        <button class="btn btn-secondary btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#TRX002</td>
+                                <td>Pedro Martínez</td>
+                                <td>Diseño Web CSS3</td>
+                                <td>10/06/2023</td>
+                                <td>$150.00</td>
+                                <td>
+                                    <span class="status paid">
+                                        <i class="fas fa-check-circle"></i> Pagado
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="payment-actions">
+                                        <button class="btn btn-secondary btn-sm" disabled>
+                                            <i class="fas fa-check"></i> Pagado
+                                        </button>
+                                        <button class="btn btn-secondary btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sección de Estadísticas -->
+            <div id="estadisticas" class="section">
+                <div class="stats">
+                    <h2>Resumen General</h2>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total de Cursos</h3>
+                            <div class="value">12</div>
+                            <div class="change positive">
+                                <i class="fas fa-arrow-up"></i> 20% desde el mes pasado
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Estudiantes Activos</h3>
+                            <div class="value">84</div>
+                            <div class="change positive">
+                                <i class="fas fa-arrow-up"></i> 15% desde el mes pasado
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Ingresos Totales</h3>
+                            <div class="value">$5,420</div>
+                            <div class="change positive">
+                                <i class="fas fa-arrow-up"></i> 32% desde el mes pasado
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Tasa de Finalización</h3>
+                            <div class="value">78%</div>
+                            <div class="change negative">
+                                <i class="fas fa-arrow-down"></i> 5% desde el mes pasado
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pie-charts">
+                        <div class="chart-container">
+                            <h3>Distribución de Estudiantes por Curso</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="coursesPieChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <h3>Estudiantes por Estado</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="statusPieChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container" style="margin-top: 1.5rem;">
+                        <h3>Ingresos Mensuales</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Calendario -->
+            <div id="calendario" class="section">
+                <div class="mini-calendar-container">
+                    <div class="mini-calendar-header">
+                        <h3 class="mini-calendar-title" id="mini-calendar-month-year">Junio 2023</h3>
+                        <div class="mini-calendar-nav">
+                            <button class="btn btn-secondary btn-sm" onclick="prevMonth()">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="nextMonth()">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <button class="btn btn-sm" onclick="openEventModal()">
+                                <i class="fas fa-plus"></i> Evento
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mini-calendar-grid" id="mini-calendar-days-header">
+                        <div class="mini-calendar-day-header">D</div>
+                        <div class="mini-calendar-day-header">L</div>
+                        <div class="mini-calendar-day-header">M</div>
+                        <div class="mini-calendar-day-header">M</div>
+                        <div class="mini-calendar-day-header">J</div>
+                        <div class="mini-calendar-day-header">V</div>
+                        <div class="mini-calendar-day-header">S</div>
+                    </div>
+                    
+                    <div class="mini-calendar-grid" id="mini-calendar-days">
+                        <!-- Los días del calendario se generan con JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Eventos del mes -->
+                <div class="event-cards" id="event-cards-container">
+                    <!-- Las cards de eventos se generan con JavaScript -->
+                </div>
+            </div>
+
+            <!-- Sección de Certificados -->
+            <div id="certificados" class="section">
+                
+                <div class="certificate-card">
+                    <div class="certificate-header">
+                        <h3 class="certificate-title">Certificado de Finalización - HTML5 Moderno</h3>
+                        <div class="certificate-meta">
+                            <div class="certificate-meta-item">
+                                <i class="fas fa-user-graduate"></i>
+                                <span>Ana López</span>
+                            </div>
+                            <div class="certificate-meta-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>15/06/2023</span>
+                            </div>
+                            <div class="certificate-meta-item">
+                                <i class="fas fa-id-card"></i>
+                                <span>#CERT-001</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="certificate-preview">
+                        <img src="https://via.placeholder.com/800x500?text=Certificado+HTML5+Moderno" alt="Certificado HTML5 Moderno">
+                    </div>
+                    
+                    <div class="certificate-actions">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Descargar PDF
+                        </button>
+                        <button class="btn btn-success">
+                            <i class="fas fa-envelope"></i> Enviar por Email
+                        </button>
+                        <button class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Copia de Seguridad -->
+<div id="backup" class="section">
+    <div class="backup-section">
+        <h2>Copia de Seguridad</h2>
+        <p>Realiza una copia de seguridad de todos los datos del sistema o restaura desde un archivo de respaldo.</p>
+        
+        <div class="backup-options">
+            <button class="backup-btn" onclick="createBackup()">
+                <i class="fas fa-save"></i> Crear Copia de Seguridad
+            </button>
+            <button class="backup-btn" onclick="document.getElementById('backup-file').click()">
+                <i class="fas fa-upload"></i> Cargar Copia de Seguridad
+            </button>
+            <input type="file" id="backup-file" accept=".json" style="display: none;" onchange="loadBackup(this.files[0])">
+        </div>
+    </div>
+</div>
+
+<!-- Sección de Reportes -->
+<div id="reportes" class="section">
+    <div class="header-actions" style="margin-bottom: 1.5rem;">
+        <button class="btn" onclick="generateReport('all')">
+            <i class="fas fa-file-pdf"></i> Generar Reporte Completo
+        </button>
+        <button class="btn btn-secondary" onclick="exportToExcel()">
+            <i class="fas fa-file-excel"></i> Exportar a Excel
+        </button>
+    </div>
+    
+    <div class="report-cards">
+        <!-- Reporte de Cursos -->
+        <div class="report-card">
+            <h3><i class="fas fa-book-open"></i> Reporte de Cursos</h3>
+            <p>Genera un informe detallado de todos los cursos disponibles, incluyendo estadísticas de inscripción.</p>
+            <div class="report-actions">
+                <button class="btn btn-sm" onclick="generateReport('courses')">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="generateCourseStats()">
+                    <i class="fas fa-chart-bar"></i> Estadísticas
+                </button>
+            </div>
+        </div>
+        
+        <!-- Reporte de Estudiantes -->
+        <div class="report-card">
+            <h3><i class="fas fa-users"></i> Reporte de Estudiantes</h3>
+            <p>Listado completo de estudiantes con información de contacto y cursos matriculados.</p>
+            <div class="report-actions">
+                <button class="btn btn-sm" onclick="generateReport('students')">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="generateStudentStats()">
+                    <i class="fas fa-chart-pie"></i> Gráficos
+                </button>
+            </div>
+        </div>
+        
+        <!-- Reporte Financiero -->
+        <div class="report-card">
+            <h3><i class="fas fa-chart-line"></i> Reporte Financiero</h3>
+            <p>Análisis de ingresos, pagos pendientes y tendencias financieras.</p>
+            <div class="report-actions">
+                <button class="btn btn-sm" onclick="generateReport('financial')">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="showFinancialChart()">
+                    <i class="fas fa-chart-line"></i> Tendencias
+                </button>
+            </div>
+        </div>
+        
+        <!-- Reporte de Certificados -->
+        <div class="report-card">
+            <h3><i class="fas fa-award"></i> Reporte de Certificados</h3>
+            <p>Listado de certificados emitidos con opciones de filtrado por fecha o curso.</p>
+            <div class="report-actions">
+                <button class="btn btn-sm" onclick="generateReport('certificates')">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="filterCertificates()">
+                    <i class="fas fa-filter"></i> Filtrar
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Filtros de Reportes -->
+    <div class="report-filters">
+        <h3><i class="fas fa-filter"></i> Filtros Avanzados</h3>
+        <div class="filter-grid">
+            <div class="form-group">
+                <label for="report-date-from">Desde</label>
+                <input type="date" id="report-date-from" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="report-date-to">Hasta</label>
+                <input type="date" id="report-date-to" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="report-course">Curso</label>
+                <select id="report-course" class="form-control">
+                    <option value="">Todos los cursos</option>
+                    <option value="HTML5 Moderno">HTML5 Moderno</option>
+                    <option value="Diseño Web CSS3">Diseño Web CSS3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="report-status">Estado</label>
+                <select id="report-status" class="form-control">
+                    <option value="">Todos</option>
+                    <option value="active">Activo</option>
+                    <option value="inactive">Inactivo</option>
+                </select>
+            </div>
+        </div>
+        <button class="btn" onclick="applyFilters()">
+            <i class="fas fa-check"></i> Aplicar Filtros
+        </button>
+    </div>
+    
+    <!-- Vista previa del reporte -->
+    <div class="report-preview">
+        <div class="report-preview-header">
+            <h3><i class="fas fa-eye"></i> Vista Previa del Reporte</h3>
+            <div>
+                <button class="btn btn-sm" onclick="printReport()">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="downloadReport()">
+                    <i class="fas fa-download"></i> Descargar
+                </button>
+            </div>
+        </div>
+        <div class="responsive-table">
+            <table id="report-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Curso</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Datos del reporte se cargarán aquí -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Sección de Mensajes -->
+<div id="mensajes" class="section">
+  
+    
+    <div class="responsive-table">
+        <table id="messages-table">
+            <thead>
+                <tr>
+                    <th>Para</th>
+                    <th>Asunto</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="user-avatar" style="margin-right: 0.75rem;">AL</div>
+                            <div>
+                                <div class="font-weight-600">Ana López</div>
+                                <small class="text-muted">ana@example.com</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Recordatorio de pago</td>
+                    <td>15/06/2023</td>
+                    <td><span class="badge badge-success">Enviado</span></td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="btn btn-secondary btn-sm">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="user-avatar" style="margin-right: 0.75rem;">PM</div>
+                            <div>
+                                <div class="font-weight-600">Pedro Martínez</div>
+                                <small class="text-muted">pedro@example.com</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Certificado del curso</td>
+                    <td>10/06/2023</td>
+                    <td><span class="badge badge-warning">Pendiente</span></td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="btn btn-secondary btn-sm">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+    <!-- Modal para agregar curso/estudiante -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title"><i class="fas fa-book"></i> Agregar Nuevo Curso</h2>
+                <button class="close-modal" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="course-form" class="modal-form">
+                <div id="course-fields">
+                    <div class="form-group">
+                        <label for="course-name">Nombre del Curso</label>
+                        <input type="text" id="course-name" class="form-control" name="course-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="course-description">Descripción</label>
+                        <textarea id="course-description" class="form-control" name="course-description" rows="4" required></textarea>
+                    </div>
+                    
+                    <div class="form-row" style="display: flex; gap: 1rem;">
+                        <div class="form-group" style="flex: 1;">
+                            <label for="course-duration">Duración</label>
+                            <input type="text" id="course-duration" class="form-control" name="course-duration" required>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="course-price">Precio ($)</label>
+                            <input type="number" id="course-price" class="form-control" name="course-price" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="course-instructor">Instructor</label>
+                        <select id="course-instructor" class="form-control" name="course-instructor" required>
+                            <option value="">Seleccionar instructor</option>
+                            <option value="Juan Pérez">Juan Pérez</option>
+                            <option value="María Gómez">María Gómez</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="course-category">Categoría</label>
+                        <select id="course-category" class="form-control" name="course-category" required>
+                            <option value="">Seleccionar categoría</option>
+                            <option value="Desarrollo Web">Desarrollo Web</option>
+                            <option value="Programación">Programación</option>
+                            <option value="Diseño">Diseño</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="student-fields" class="hidden">
+                    <div class="form-group">
+                        <label for="student-name">Nombre Completo</label>
+                        <input type="text" id="student-name" class="form-control" name="student-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="student-email">Email</label>
+                        <input type="email" id="student-email" class="form-control" name="student-email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="student-phone">Teléfono</label>
+                        <input type="tel" id="student-phone" class="form-control" name="student-phone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="student-course">Curso</label>
+                        <select id="student-course" class="form-control" name="student-course" multiple>
+                            <option value="html">HTML5 Moderno</option>
+                            <option value="css">Diseño Web CSS3</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn" id="submit-button">
+                        <i class="fas fa-save"></i> Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para instructores -->
+    <div class="modal" id="instructorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-chalkboard-teacher"></i> Nuevo Instructor</h2>
+                <button class="close-modal" onclick="closeInstructorModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="instructor-form" class="modal-form">
+                <div class="form-group">
+                    <label for="instructor-name">Nombre Completo</label>
+                    <input type="text" id="instructor-name" class="form-control" name="instructor-name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="instructor-email">Email</label>
+                    <input type="email" id="instructor-email" class="form-control" name="instructor-email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="instructor-phone">Teléfono</label>
+                    <input type="tel" id="instructor-phone" class="form-control" name="instructor-phone">
+                </div>
+                
+                <div class="form-group">
+                    <label for="instructor-specialty">Especialidad</label>
+                    <input type="text" id="instructor-specialty" class="form-control" name="instructor-specialty" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="instructor-bio">Biografía</label>
+                    <textarea id="instructor-bio" class="form-control" name="instructor-bio" rows="3"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeInstructorModal()">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-save"></i> Guardar Instructor
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para perfil -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-user"></i> Mi Perfil</h2>
+                <button class="close-modal" onclick="closeProfileModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="profile-form" class="modal-form">
+                <div class="avatar-container">
+                    <div class="avatar">
+                        <div class="avatar-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="avatar-actions">
+                        <button type="button" class="btn btn-secondary">
+                            <i class="fas fa-camera"></i> Cambiar foto
+                        </button>
+                        <button type="button" class="btn btn-secondary">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+
+                <div id="profile-fields">
+                    <div class="form-group">
+                        <label for="profile-name">Nombre Completo</label>
+                        <input type="text" id="profile-name" class="form-control" name="profile-name" value="Administrador" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profile-email">Email</label>
+                        <input type="email" id="profile-email" class="form-control" name="profile-email" value="admin@example.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profile-phone">Teléfono</label>
+                        <input type="tel" id="profile-phone" class="form-control" name="profile-phone" value="+1 234 567 890">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profile-bio">Biografía</label>
+                        <textarea id="profile-bio" class="form-control" name="profile-bio" rows="3">Administrador del sistema de gestión de cursos.</textarea>
+                    </div>
+                    
+                    <h3 style="margin-top: 1.5rem; margin-bottom: 1rem;">Cambiar Contraseña</h3>
+                    
+                    <div class="form-group">
+                        <label for="current-password">Contraseña Actual</label>
+                        <input type="password" id="current-password" class="form-control" name="current-password">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profile-password">Nueva Contraseña</label>
+                        <input type="password" id="profile-password" class="form-control" name="profile-password">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profile-confirm-password">Confirmar Contraseña</label>
+                        <input type="password" id="profile-confirm-password" class="form-control" name="profile-confirm-password">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeProfileModal()">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-save"></i> Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para notificaciones -->
+    <div class="modal" id="notificationsModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2><i class="fas fa-bell"></i> Notificaciones</h2>
+                <button class="close-modal" onclick="closeNotificationsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="notifications-list">
+                <div class="notification-item unread">
+                    <div class="notification-actions">
+                        <button title="Marcar como leída"><i class="fas fa-check"></i></button>
+                        <button title="Eliminar"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <p><strong>Nuevo estudiante inscrito</strong> - Ana López se ha inscrito en el Curso de HTML5 Moderno</p>
+                    <small><i class="far fa-clock"></i> Hace 2 horas</small>
+                </div>
+                
+                <div class="notification-item">
+                    <div class="notification-actions">
+                        <button title="Marcar como leída"><i class="fas fa-check"></i></button>
+                        <button title="Eliminar"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <p><strong>Pago recibido</strong> - Pedro Martínez ha completado el pago del Curso de Diseño Web CSS3</p>
+                    <small><i class="far fa-clock"></i> Hace 1 día</small>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="markAllNotificationsAsRead()">
+                    <i class="fas fa-check-double"></i> Marcar todas como leídas
+                </button>
+                <button type="button" class="btn" onclick="closeNotificationsModal()">
+                    <i class="fas fa-times"></i> Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para configuración -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2><i class="fas fa-cog"></i> Configuración del Sistema</h2>
+                <button class="close-modal" onclick="closeSettingsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="settings-tabs">
+                <div class="settings-tab active" onclick="openSettingsTab('general-settings')">General</div>
+                <div class="settings-tab" onclick="openSettingsTab('appearance-settings')">Apariencia</div>
+                <div class="settings-tab" onclick="openSettingsTab('user-management')">Usuarios</div>
+            </div>
+            
+            <!-- Configuración General -->
+            <div id="general-settings" class="settings-tab-content active">
+                <div class="settings-form-group">
+                    <h3>Información del Sistema</h3>
+                    
+                    <div class="form-group">
+                        <label for="system-name">Nombre del Sistema</label>
+                        <input type="text" id="system-name" class="form-control" name="system-name" value="Gestión de Cursos">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="system-logo">Logo</label>
+                        <input type="file" id="system-logo" class="form-control" name="system-logo">
+                        <small class="text-muted">Formatos aceptados: PNG, JPG. Tamaño máximo: 2MB</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="system-timezone">Zona Horaria</label>
+                        <select id="system-timezone" class="form-control" name="system-timezone">
+                            <option value="-4" selected>UTC-04:00 (Venezuela)</option>
+                            <option value="-5">UTC-05:00 (Colombia, Perú)</option>
+                            <option value="-6">UTC-06:00 (México Central)</option>
+                            <option value="-3">UTC-03:00 (Argentina, Chile)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="system-currency">Moneda</label>
+                        <select id="system-currency" class="form-control" name="system-currency">
+                            <option value="USD" selected>Dólar Estadounidense (USD)</option>
+                            <option value="EUR">Euro (EUR)</option>
+                            <option value="GBP">Libra Esterlina (GBP)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-form-group">
+                    <h3>Configuración de Cursos</h3>
+                    
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="course-approval" name="course-approval" checked>
+                            <label for="course-approval">Requerir aprobación para nuevos cursos</label>
+                        </div>
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="course-certificates" name="course-certificates" checked>
+                            <label for="course-certificates">Habilitar certificados al completar cursos</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Configuración de Apariencia -->
+            <div id="appearance-settings" class="settings-tab-content">
+                <div class="settings-form-group">
+                    <h3>Tema de la Aplicación</h3>
+                    
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="dark-mode-toggle" name="dark-mode-toggle" onchange="toggleDarkMode()">
+                            <label for="dark-mode-toggle">Modo Oscuro</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-form-group">
+                    <h3>Color Principal</h3>
+                    <div class="color-picker">
+                        <div class="color-option selected" style="background-color: #0f74e9;" onclick="selectColor('primary', '#0f74e9')"></div>
+                        <div class="color-option" style="background-color: #10b981;" onclick="selectColor('primary', '#10b981')"></div>
+                        <div class="color-option" style="background-color: #f59e0b;" onclick="selectColor('primary', '#f59e0b')"></div>
+                        <div class="color-option" style="background-color: #ef4444;" onclick="selectColor('primary', '#ef4444')"></div>
+                        <div class="color-option" style="background-color: #8b5cf6;" onclick="selectColor('primary', '#8b5cf6')"></div>
+                        <div class="color-option" style="background-color: #ec4899;" onclick="selectColor('primary', '#ec4899')"></div>
+                        <div class="color-option" style="background-color: #14b8a6;" onclick="selectColor('primary', '#14b8a6')"></div>
+                        <div class="color-option" style="background-color: #f97316;" onclick="selectColor('primary', '#f97316')"></div>
+                        <div class="color-option" style="background-color: #64748b;" onclick="selectColor('primary', '#64748b')"></div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="custom-color">O selecciona un color personalizado:</label>
+                        <input type="color" id="custom-color" class="form-control" style="height: 40px; width: 100%; padding: 0;" onchange="applyCustomColor(this.value)">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gestión de Usuarios -->
+<div id="user-management" class="settings-tab-content">
+    <div class="settings-form-group">
+        <h3>Usuarios del Sistema</h3>
+        
+        <div class="responsive-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="user-avatar" style="margin-right: 0.75rem;">A</div>
+                                <div>
+                                    <div class="font-weight-600">Administrador</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>admin@example.com</td>
+                        <td>Administrador</td>
+                        <td>
+                            <div class="table-actions">
+                                <button class="btn btn-secondary btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" disabled>
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="settings-form-group">
+        <h3>Agregar Nuevo Usuario</h3>
+        <div class="form-group">
+            <label for="new-user-email">Email</label>
+            <input type="email" id="new-user-email" class="form-control" name="new-user-email" required>
+        </div>
+        <div class="form-group password-input-container">
+            <label for="new-user-password">Contraseña</label>
+            <input type="password" id="new-user-password" class="form-control" name="new-user-password" required>
+            <button class="password-toggle" type="button" onclick="togglePasswordVisibility('new-user-password')">
+                <i class="fas fa-eye"></i>
+            </button>
+            <small class="text-muted">Mínimo 8 caracteres</small>
+        </div>
+        <div class="form-group">
+            <label for="new-user-role">Rol</label>
+            <select id="new-user-role" class="form-control" name="new-user-role">
+                <option value="admin">Administrador</option>
+                <option value="assistant">Asistente</option>
+            </select>
+        </div>
+        <button class="btn" onclick="addNewUser()">
+            <i class="fas fa-user-plus"></i> Agregar Usuario
+        </button>
+    </div>
+    
+    <div class="form-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeSettingsModal()">
+            <i class="fas fa-times"></i> Cancelar
+        </button>
+        <button type="button" class="btn" onclick="saveSettings()">
+            <i class="fas fa-save"></i> Guardar Configuración
+        </button>
+    </div>
+</div>
+
+           
+                
+                
+                    
+
+    <!-- Modal para eventos del calendario -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 id="event-modal-title"><i class="fas fa-calendar-plus"></i> Nuevo Evento</h2>
+                <button class="close-modal" onclick="closeEventModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="event-form" class="modal-form">
+                <div class="form-group">
+                    <label for="event-title">Título del Evento</label>
+                    <input type="text" id="event-title" class="form-control" name="event-title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="event-date">Fecha</label>
+                    <input type="text" id="event-date" class="form-control" name="event-date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="event-time">Hora</label>
+                    <input type="text" id="event-time" class="form-control" name="event-time">
+                </div>
+                
+                <div class="form-group">
+                    <label for="event-description">Descripción</label>
+                    <textarea id="event-description" class="form-control" name="event-description" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="event-type">Tipo de Evento</label>
+                    <select id="event-type" class="form-control" name="event-type">
+                        <option value="general">General</option>
+                        <option value="class">Clase</option>
+                        <option value="meeting">Reunión</option>
+                        <option value="reminder">Recordatorio</option>
+                    </select>
+                </div>
+                
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="event-important" name="event-important">
+                        <label for="event-important">Evento importante</label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeEventModal()">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-save"></i> Guardar Evento
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para agregar pago -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 id="payment-modal-title"><i class="fas fa-dollar-sign"></i> Agregar Pago</h2>
+                <button class="close-modal" onclick="closePaymentModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="payment-form" class="modal-form">
+                <div class="form-group">
+                    <label for="payment-student">Estudiante</label>
+                    <select id="payment-student" class="form-control" name="payment-student" required>
+                        <option value="">Seleccionar estudiante</option>
+                        <option value="Ana López">Ana López</option>
+                        <option value="Pedro Martínez">Pedro Martínez</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="payment-course">Curso</label>
+                    <select id="payment-course" class="form-control" name="payment-course" required>
+                        <option value="">Seleccionar curso</option>
+                        <option value="HTML5 Moderno">HTML5 Moderno</option>
+                        <option value="Diseño Web CSS3">Diseño Web CSS3</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="payment-amount">Monto ($)</label>
+                    <input type="number" id="payment-amount" class="form-control" name="payment-amount" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="payment-date">Fecha</label>
+                    <input type="text" id="payment-date" class="form-control" name="payment-date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="payment-method">Método de Pago</label>
+                    <select id="payment-method" class="form-control" name="payment-method" required>
+                        <option value="">Seleccionar método</option>
+                        <option value="Efectivo">Efectivo</option>
+                        <option value="Transferencia">Transferencia</option>
+                        <option value="Tarjeta">Tarjeta de Crédito/Débito</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="payment-notes">Notas</label>
+                    <textarea id="payment-notes" class="form-control" name="payment-notes" rows="3"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closePaymentModal()">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-save"></i> Guardar Pago
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para certificados -->
+    <div class="modal" id="certificateModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2><i class="fas fa-file-certificate"></i> Generar Certificado</h2>
+                <button class="close-modal" onclick="closeCertificateModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="certificate-form" class="modal-form">
+                <div class="form-group">
+                    <label for="certificate-student">Estudiante</label>
+                    <select id="certificate-student" class="form-control" name="certificate-student" required>
+                        <option value="">Seleccionar estudiante</option>
+                        <option value="Ana López">Ana López</option>
+                        <option value="Pedro Martínez">Pedro Martínez</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="certificate-course">Curso</label>
+                    <select id="certificate-course" class="form-control" name="certificate-course" required>
+                        <option value="">Seleccionar curso</option>
+                        <option value="HTML5 Moderno">HTML5 Moderno</option>
+                        <option value="Diseño Web CSS3">Diseño Web CSS3</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="certificate-date">Fecha de Finalización</label>
+                    <input type="text" id="certificate-date" class="form-control" name="certificate-date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Plantilla de Certificado</label>
+                    <div class="certificate-template-selector">
+                        <div class="certificate-template selected" onclick="selectCertificateTemplate(this)">
+                            <img src="https://via.placeholder.com/300x200?text=Plantilla+1" alt="Plantilla 1">
+                            <h4>Clásico</h4>
+                        </div>
+                        <div class="certificate-template" onclick="selectCertificateTemplate(this)">
+                            <img src="https://via.placeholder.com/300x200?text=Plantilla+2" alt="Plantilla 2">
+                            <h4>Moderno</h4>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="certificate-message">Mensaje Personalizado</label>
+                    <textarea id="certificate-message" class="form-control" name="certificate-message" rows="3">Felicitaciones por completar exitosamente el curso. Este certificado reconoce tu dedicación y esfuerzo.</textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeCertificateModal()">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-save"></i> Generar Certificado
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+    <script>
+        // Variable para controlar la sección actual
+        let currentSection = 'cursos';
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        let events = [
+            { id: 1, title: 'Clase de HTML5', date: '2023-06-15', time: '10:00', description: 'Introducción a HTML5', type: 'class', important: false },
+            { id: 2, title: 'Reunión con instructores', date: '2023-06-20', time: '15:00', description: 'Planificación del próximo mes', type: 'meeting', important: true },
+            { id: 3, title: 'Fecha límite de pagos', date: '2023-06-05', time: '', description: 'Recordar a estudiantes pendientes', type: 'reminder', important: false }
+        ];
+
+        // Datos de ejemplo para la aplicación
+        const appData = {
+            cursos: [
+                {
+                    id: 1,
+                    nombre: "Curso de HTML5 Moderno",
+                    descripcion: "Aprende los fundamentos de HTML5 y las mejores prácticas para desarrollo web moderno.",
+                    duracion: "4 semanas",
+                    instructor: "Juan Pérez",
+                    estudiantes: 25,
+                    precio: 120,
+                    categoria: "Desarrollo Web",
+                    estado: "activo"
+                },
+                {
+                    id: 2,
+                    nombre: "Diseño Web con CSS3",
+                    descripcion: "Domina el diseño web responsive con CSS3, Flexbox y Grid Layout para crear interfaces modernas.",
+                    duracion: "5 semanas",
+                    instructor: "María Gómez",
+                    estudiantes: 18,
+                    precio: 150,
+                    categoria: "Diseño",
+                    estado: "activo"
+                }
+            ],
+            estudiantes: [
+                {
+                    id: 1,
+                    nombre: "Ana López",
+                    email: "ana@example.com",
+                    telefono: "+1234567890",
+                    cursos: ["HTML5 Moderno", "CSS3"],
+                    estado: "activo"
+                },
+                {
+                    id: 2,
+                    nombre: "Pedro Martínez",
+                    email: "pedro@example.com",
+                    telefono: "+1234567891",
+                    cursos: ["CSS3", "JavaScript"],
+                    estado: "activo"
+                }
+            ],
+            instructores: [
+                {
+                    id: 1,
+                    nombre: "Juan Pérez",
+                    email: "juan@example.com",
+                    especialidad: "Desarrollo Web",
+                    cursos: ["HTML5 Moderno", "CSS3"],
+                    estado: "activo"
+                },
+                {
+                    id: 2,
+                    nombre: "María Gómez",
+                    email: "maria@example.com",
+                    especialidad: "Diseño Web",
+                    cursos: ["CSS3", "JavaScript"],
+                    estado: "activo"
+                }
+            ],
+            pagos: [
+                {
+                    id: 1,
+                    estudiante: "Ana López",
+                    curso: "HTML5 Moderno",
+                    fecha: "2023-06-15",
+                    monto: 120,
+                    metodo: "Transferencia",
+                    estado: "pendiente"
+                },
+                {
+                    id: 2,
+                    estudiante: "Pedro Martínez",
+                    curso: "Diseño Web CSS3",
+                    fecha: "2023-06-10",
+                    monto: 150,
+                    metodo: "Efectivo",
+                    estado: "pagado"
+                }
+            ],
+            configuracion: {
+                tema: "claro",
+                colorPrincipal: "#0f74e9",
+                zonaHoraria: "-4",
+                moneda: "USD"
+            }
+        };
+
+        // Función para crear una copia de seguridad
+        function createBackup() {
+            // Crear un objeto con todos los datos
+            const backupData = {
+                cursos: appData.cursos,
+                estudiantes: appData.estudiantes,
+                instructores: appData.instructores,
+                pagos: appData.pagos,
+                configuracion: appData.configuracion,
+                eventos: events,
+                fechaBackup: new Date().toISOString()
+            };
+
+            // Convertir a JSON
+            const jsonData = JSON.stringify(backupData, null, 2);
+            
+            // Crear un blob con los datos
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            
+            // Crear un enlace para descargar el archivo
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `backup_gestion_cursos_${new Date().toISOString().slice(0, 10)}.json`;
+            
+            // Simular click en el enlace para descargar
+            document.body.appendChild(a);
+            a.click();
+            
+            // Limpiar
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            showToast('Copia de seguridad creada y descargada correctamente', 'success');
+        }
+
+        // Función para alternar el menú lateral en móviles
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const mainContent = document.getElementById('mainContent');
+            
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+            mainContent.classList.toggle('sidebar-open');
+            
+            // Bloquear/desbloquear scroll del body cuando el menú está abierto
+            document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+        }
+
+        // Mostrar/ocultar menú desplegable del usuario
+        document.querySelector('.user-icon').addEventListener('click', function() {
+            document.querySelector('.dropdown-menu').style.display = 
+                document.querySelector('.dropdown-menu').style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Cerrar menú desplegable al hacer clic fuera
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.user-menu')) {
+                document.querySelector('.dropdown-menu').style.display = 'none';
+            }
+        });
+
+        // Funciones para abrir y cerrar el modal
+        function openModal() {
+            // Configurar el modal según la sección actual
+            const modalTitle = document.getElementById('modal-title');
+            const submitButton = document.getElementById('submit-button');
+            const courseFields = document.getElementById('course-fields');
+            const studentFields = document.getElementById('student-fields');
+
+            if (currentSection === 'cursos') {
+                modalTitle.innerHTML = '<i class="fas fa-book"></i> Agregar Nuevo Curso';
+                submitButton.innerHTML = '<i class="fas fa-save"></i> Guardar Curso';
+                courseFields.classList.remove('hidden');
+                studentFields.classList.add('hidden');
+            } else if (currentSection === 'estudiantes') {
+                modalTitle.innerHTML = '<i class="fas fa-user-plus"></i> Agregar Nuevo Estudiante';
+                submitButton.innerHTML = '<i class="fas fa-save"></i> Guardar Estudiante';
+                courseFields.classList.add('hidden');
+                studentFields.classList.remove('hidden');
+            }
+
+            document.getElementById('modal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // Funciones para el modal de instructores
+        function openInstructorModal() {
+            document.getElementById('instructorModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeInstructorModal() {
+            document.getElementById('instructorModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // Funciones para el modal de perfil
+        function openProfileModal() {
+            document.getElementById('profileModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // Funciones para el modal de notificaciones
+        function openNotificationsModal() {
+            document.getElementById('notificationsModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeNotificationsModal() {
+            document.getElementById('notificationsModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function markAllNotificationsAsRead() {
+            const notifications = document.querySelectorAll('.notification-item.unread');
+            notifications.forEach(notification => {
+                notification.classList.remove('unread');
+            });
+            
+            // Mostrar notificación de éxito
+            showToast('Todas las notificaciones marcadas como leídas', 'success');
+        }
+
+        // Funciones para el modal de configuración
+        function openSettingsModal() {
+            document.getElementById('settingsModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settingsModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function openSettingsTab(tabId) {
+            // Ocultar todos los contenidos de pestañas
+            document.querySelectorAll('.settings-tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Desactivar todas las pestañas
+            document.querySelectorAll('.settings-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Activar la pestaña seleccionada
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function saveSettings() {
+            // Mostrar notificación de éxito
+            showToast('Configuración guardada exitosamente', 'success');
+            closeSettingsModal();
+        }
+
+        // Función para agregar nuevo usuario
+        function addNewUser() {
+    const email = document.getElementById('new-user-email').value;
+    const password = document.getElementById('new-user-password').value;
+    const role = document.getElementById('new-user-role').value;
+    
+    if (!email) {
+        showToast('Por favor ingrese un email válido', 'error');
+        return;
+    }
+    
+    if (!password || password.length < 8) {
+        showToast('La contraseña debe tener al menos 8 caracteres', 'error');
+        return;
+    }
+    
+    // Aquí iría la lógica para agregar el usuario a tu sistema
+    // Por ahora solo mostramos un mensaje de éxito
+    showToast(`Nuevo usuario ${email} agregado como ${role === 'admin' ? 'Administrador' : 'Asistente'}`, 'success');
+    
+    // Limpiar el formulario
+    document.getElementById('new-user-email').value = '';
+    document.getElementById('new-user-password').value = '';
+}
+ 
+
+        // Función para buscar estudiantes
+        function searchStudents() {
+            const input = document.getElementById('search-input');
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById('students-table');
+            const tr = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < tr.length; i++) {
+                let found = false;
+                const tdName = tr[i].getElementsByTagName('td')[0];
+                const tdEmail = tr[i].getElementsByTagName('td')[1];
+                
+                if (tdName && tdEmail) {
+                    const txtValueName = tdName.textContent || tdName.innerText;
+                    const txtValueEmail = tdEmail.textContent || tdEmail.innerText;
+                    
+                    if (txtValueName.toUpperCase().indexOf(filter) > -1 || 
+                        txtValueEmail.toUpperCase().indexOf(filter) > -1) {
+                        found = true;
+                    }
+                }
+                
+                if (found) {
+                    tr[i].style.display = '';
+                } else {
+                    tr[i].style.display = 'none';
+                }
+            }
+        }
+
+        // Función para mostrar notificaciones toast
+        function showToast(message, type = 'info') {
+            // Implementar lógica para mostrar notificaciones toast
+            console.log(`[${type.toUpperCase()}] ${message}`);
+            alert(message); // Temporal hasta implementar toast propiamente
+        }
+
+        // Cerrar modal al hacer clic fuera del contenido
+        window.onclick = function (event) {
+            const modals = ['modal', 'profileModal', 'notificationsModal', 'settingsModal', 'eventModal', 'paymentModal', 'instructorModal', 'certificateModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    eval(`close${modalId.charAt(0).toUpperCase() + modalId.slice(1)}()`);
+                }
+            });
+        };
+
+        // Manejar el envío del formulario
+        document.getElementById('course-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            
+            if (currentSection === 'cursos') {
+                showToast('Curso agregado exitosamente', 'success');
+            } else if (currentSection === 'estudiantes') {
+                showToast('Estudiante agregado exitosamente', 'success');
+            }
+            
+            closeModal();
+        });
+
+        // Manejar el envío del formulario de instructores
+        document.getElementById('instructor-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            showToast('Instructor agregado exitosamente', 'success');
+            closeInstructorModal();
+        });
+
+        // Manejar el envío del formulario de perfil
+        document.getElementById('profile-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            showToast('Perfil actualizado exitosamente', 'success');
+            closeProfileModal();
+        });
+
+        // Enviar certificado
+        function sendCertificate(studentName) {
+            showToast(`Certificado enviado a ${studentName}`, 'success');
+        }
+
+        // Marcar como pagado
+        function markAsPaid(studentName) {
+            showToast(`Pago marcado como completado para ${studentName}`, 'success');
+            // Actualizar la UI
+            const statusElement = event.target.closest('tr').querySelector('.status');
+            if (statusElement) {
+                statusElement.className = 'status paid';
+                statusElement.innerHTML = '<i class="fas fa-check-circle"></i> Pagado';
+                event.target.disabled = true;
+                event.target.innerHTML = '<i class="fas fa-check"></i> Pagado';
+                event.target.classList.remove('btn-success');
+                event.target.classList.add('btn-secondary');
+            }
+        }
+
+        function showSection(sectionId) {
+    currentSection = sectionId;
+    
+    // Actualizar el menú lateral
+    document.querySelectorAll('.sidebar ul li a').forEach(link => {
+        link.classList.remove('active');
+    });
+    event.currentTarget.classList.add('active');
+    
+    // Ocultar todas las secciones
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+    });
+
+    // Mostrar la sección seleccionada
+    document.getElementById(sectionId).classList.add('active');
+
+    // Cambiar el título de la sección
+    const sectionTitle = document.getElementById('section-title');
+    const actionButton = document.getElementById('main-action-button');
+    const searchBar = document.querySelector('.search-bar');
+
+    // Mostrar u ocultar barra de búsqueda según la sección
+    if (['certificados', 'estadisticas', 'backup', 'reportes'].includes(sectionId)) {
+        searchBar.style.display = 'none'; // Oculta la barra en estas secciones
+    } else {
+        searchBar.style.display = 'flex'; // Muestra la barra en otras secciones
+    }
+
+    switch (sectionId) {
+        case 'cursos':
+            sectionTitle.textContent = 'Cursos Disponibles';
+            actionButton.innerHTML = '<i class="fas fa-plus"></i> Nuevo Curso';
+            actionButton.onclick = openModal;
+            actionButton.classList.remove('hidden');
+            break;
+        case 'estudiantes':
+            sectionTitle.textContent = 'Estudiantes Inscritos';
+            actionButton.innerHTML = '<i class="fas fa-user-plus"></i> Nuevo Estudiante';
+            actionButton.onclick = openModal;
+            actionButton.classList.remove('hidden');
+            break;
+        case 'instructores':
+            sectionTitle.textContent = 'Instructores';
+            actionButton.innerHTML = '<i class="fas fa-plus"></i> Nuevo Instructor';
+            actionButton.onclick = openInstructorModal;
+            actionButton.classList.remove('hidden');
+            break;
+        case 'pagos':
+            sectionTitle.textContent = 'Control de Pagos';
+            actionButton.innerHTML = '<i class="fas fa-plus"></i> Añadir Pago';
+            actionButton.onclick = openPaymentModal;
+            actionButton.classList.remove('hidden');
+            break;
+        case 'estadisticas':
+            sectionTitle.textContent = 'Estadísticas del Sistema';
+            actionButton.classList.add('hidden');
+            initializeCharts();
+            break;
+        case 'calendario':
+            sectionTitle.textContent = 'Calendario de Eventos';
+            actionButton.classList.add('hidden');
+            renderMiniCalendar(currentMonth, currentYear);
+            renderEventCards();
+            break;
+        case 'certificados':
+            sectionTitle.textContent = 'Gestión de Certificados';
+            actionButton.innerHTML = '<i class="fas fa-plus"></i> Generar Certificado';
+            actionButton.onclick = openCertificateModal;
+            actionButton.classList.remove('hidden');
+            break;
+        case 'backup':
+            sectionTitle.textContent = 'Copia de Seguridad';
+            actionButton.classList.add('hidden');
+            break;
+            case 'reportes':
+    sectionTitle.textContent = 'Generación de Reportes';
+    actionButton.classList.add('hidden');
+    generateReport('all');
+    break;
+    case 'mensajes':
+    sectionTitle.textContent = 'Gestión de Mensajes';
+    actionButton.innerHTML = '<i class="fas fa-plus"></i> Nuevo Mensaje';
+    actionButton.onclick = openNewMessageModal;
+    actionButton.classList.remove('hidden');
+    break;
+
+
+
+    }
+
+    // Cerrar el menú lateral en móviles
+    if (window.innerWidth < 768) {
+        toggleSidebar();
+    }
+    
+    // Scroll al inicio de la sección
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+  
+           
+    
+        
+
+        // Función para cerrar sesión
+        function logout() {
+            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                showToast('Sesión cerrada correctamente', 'success');
+                // Redireccionar a la página de login
+                // window.location.href = 'login.html';
+            }
+        }
+
+        // Inicializar la sección de cursos como activa
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection('cursos');
+            
+            // Inicializar calendario
+            flatpickr("#event-date", {
+                dateFormat: "Y-m-d",
+                locale: "es"
+            });
+            
+            flatpickr("#event-time", {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: true
+            });
+
+            // Inicializar fecha de pago
+            flatpickr("#payment-date", {
+                dateFormat: "Y-m-d",
+                locale: "es",
+                defaultDate: new Date()
+            });
+
+            // Inicializar fecha de certificado
+            flatpickr("#certificate-date", {
+                dateFormat: "Y-m-d",
+                locale: "es",
+                defaultDate: new Date()
+            });
+
+            // Configurar la búsqueda
+            document.getElementById('search-input').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                if (currentSection === 'estudiantes') {
+                    searchStudents();
+                } else if (currentSection === 'instructores') {
+                    // Implementar búsqueda de instructores si es necesario
+                } else if (currentSection === 'cursos') {
+                    // Implementar búsqueda de cursos si es necesario
+                }
+            });
+
+            // Cargar configuración guardada
+            loadSettings();
+        });
+
+        // Inicializar gráficos
+        function initializeCharts() {
+            // Verificar si los elementos canvas existen
+            const coursesPieCanvas = document.getElementById('coursesPieChart');
+            const statusPieCanvas = document.getElementById('statusPieChart');
+            const revenueCanvas = document.getElementById('revenueChart');
+            
+            if (!coursesPieCanvas || !statusPieCanvas || !revenueCanvas) return;
+            
+            // Gráfico de torta para distribución de estudiantes por curso
+            const coursesCtx = coursesPieCanvas.getContext('2d');
+            const coursesPieChart = new Chart(coursesCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['HTML5 Moderno', 'Diseño Web CSS3', 'JavaScript Avanzado', 'Python para Principiantes', 'React.js Profesional'],
+                    datasets: [{
+                        data: [25, 18, 32, 21, 28],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(16, 185, 129, 0.7)',
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(139, 92, 246, 0.7)',
+                            'rgba(236, 72, 153, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(139, 92, 246, 1)',
+                            'rgba(236, 72, 153, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Gráfico de torta para estados de estudiantes
+            const statusCtx = statusPieCanvas.getContext('2d');
+            const statusPieChart = new Chart(statusCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Activos', 'Pendientes', 'Inactivos'],
+                    datasets: [{
+                        data: [84, 15, 8],
+                        backgroundColor: [
+                            'rgba(16, 185, 129, 0.7)',
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(239, 68, 68, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(239, 68, 68, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+            
+            // Gráfico de ingresos mensuales
+            const revenueCtx = revenueCanvas.getContext('2d');
+            const revenueChart = new Chart(revenueCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                    datasets: [{
+                        label: 'Ingresos ($)',
+                        data: [1200, 1900, 1500, 2000, 2200, 3000, 2800, 2500, 2100, 2400, 2300, 2600],
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Ajustar los gráficos al cambiar el tamaño de la ventana
+            window.addEventListener('resize', function() {
+                coursesPieChart.resize();
+                statusPieChart.resize();
+                revenueChart.resize();
+            });
+        }
+
+        // Funciones para el mini calendario
+        function renderMiniCalendar(month, year) {
+            const calendarDays = document.getElementById('mini-calendar-days');
+            const monthYearDisplay = document.getElementById('mini-calendar-month-year');
+            
+            // Limpiar el calendario
+            calendarDays.innerHTML = '';
+            
+            // Configurar el título del mes y año
+            const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                               'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            monthYearDisplay.textContent = `${monthNames[month]} ${year}`;
+            
+            // Obtener el primer día del mes y el número de días en el mes
+            const firstDay = new Date(year, month, 1);
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            // Obtener el día de la semana del primer día (0 = Domingo, 6 = Sábado)
+            const startingDay = firstDay.getDay();
+            
+            // Obtener el número de días del mes anterior
+            const prevMonthDays = new Date(year, month, 0).getDate();
+            
+            // Agregar días del mes anterior
+            for (let i = 0; i < startingDay; i++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'mini-calendar-day other-month';
+                dayElement.textContent = prevMonthDays - startingDay + i + 1;
+                calendarDays.appendChild(dayElement);
+            }
+            
+            // Agregar días del mes actual
+            const today = new Date();
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'mini-calendar-day';
+                
+                // Verificar si es el día actual
+                if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    dayElement.classList.add('today');
+                }
+                
+                // Verificar si hay eventos para este día
+                const currentDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                const dayEvents = events.filter(event => event.date === currentDate);
+                
+                if (dayEvents.length > 0) {
+                    dayElement.classList.add('has-events');
+                }
+                
+                dayElement.textContent = i;
+                
+                // Manejar clic en el día
+                dayElement.addEventListener('click', function() {
+                    // Deseleccionar todos los días
+                    document.querySelectorAll('.mini-calendar-day').forEach(day => {
+                        day.classList.remove('selected');
+                    });
+                    
+                    // Seleccionar el día actual
+                    this.classList.add('selected');
+                    
+                    // Filtrar eventos para el día seleccionado
+                    const selectedDate = new Date(year, month, i);
+                    renderEventCards(selectedDate);
+                });
+                
+                calendarDays.appendChild(dayElement);
+            }
+            
+            // Calcular el total de celdas (siempre 42 para 6 semanas)
+            const totalCells = 42;
+            const daysSoFar = startingDay + daysInMonth;
+            const remainingCells = totalCells - daysSoFar;
+            
+            // Agregar días del próximo mes
+            for (let i = 1; i <= remainingCells; i++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'mini-calendar-day other-month';
+                dayElement.textContent = i;
+                calendarDays.appendChild(dayElement);
+            }
+        }
+
+        function renderEventCards(selectedDate = null) {
+            const eventCardsContainer = document.getElementById('event-cards-container');
+            eventCardsContainer.innerHTML = '';
+            
+            let eventsToShow = events;
+            
+            // Filtrar eventos por fecha si se seleccionó un día
+            if (selectedDate) {
+                const dateStr = selectedDate.toISOString().split('T')[0];
+                eventsToShow = events.filter(event => event.date === dateStr);
+            }
+            
+            // Mostrar mensaje si no hay eventos
+            if (eventsToShow.length === 0) {
+                const noEventsMsg = document.createElement('div');
+                noEventsMsg.className = 'text-center text-muted';
+                noEventsMsg.textContent = selectedDate ? 'No hay eventos para este día' : 'No hay eventos programados';
+                eventCardsContainer.appendChild(noEventsMsg);
+                return;
+            }
+            
+            // Crear cards para cada evento
+            eventsToShow.forEach(event => {
+                const eventCard = document.createElement('div');
+                eventCard.className = `event-card ${event.type}`;
+                if (event.important) {
+                    eventCard.classList.add('important');
+                }
+                
+                // Formatear fecha y hora
+                const eventDate = new Date(event.date);
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedDate = eventDate.toLocaleDateString('es-ES', options);
+                
+                let timeInfo = '';
+                if (event.time) {
+                    const [hours, minutes] = event.time.split(':');
+                    timeInfo = ` a las ${hours}:${minutes} hrs`;
+                }
+                
+                eventCard.innerHTML = `
+                    <h3>${event.title}</h3>
+                    <p>${event.description}</p>
+                    <div class="meta">
+                        <i class="fas fa-calendar-day"></i>
+                        <span>${formattedDate}${timeInfo}</span>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-secondary btn-sm" onclick="openEventModal(${event.id})">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteEvent(${event.id})">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                `;
+                
+                eventCardsContainer.appendChild(eventCard);
+            });
+        }
+
+        function prevMonth() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderMiniCalendar(currentMonth, currentYear);
+            renderEventCards();
+        }
+
+        function nextMonth() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderMiniCalendar(currentMonth, currentYear);
+            renderEventCards();
+        }
+
+        function openEventModal(eventId = null) {
+            const modal = document.getElementById('eventModal');
+            const form = document.getElementById('event-form');
+            const title = document.getElementById('event-modal-title');
+            
+            if (eventId) {
+                // Editar evento existente
+                const event = events.find(e => e.id == eventId);
+                if (event) {
+                    title.innerHTML = '<i class="fas fa-edit"></i> Editar Evento';
+                    document.getElementById('event-title').value = event.title;
+                    document.getElementById('event-date').value = event.date;
+                    document.getElementById('event-time').value = event.time;
+                    document.getElementById('event-description').value = event.description;
+                    document.getElementById('event-type').value = event.type;
+                    document.getElementById('event-important').checked = event.important;
+                    
+                    // Almacenar el ID del evento para actualización
+                    form.dataset.eventId = event.id;
+                }
+            } else {
+                // Nuevo evento
+                title.innerHTML = '<i class="fas fa-calendar-plus"></i> Nuevo Evento';
+                form.reset();
+                delete form.dataset.eventId;
+                
+                // Establecer la fecha seleccionada en el calendario
+                const selectedDay = document.querySelector('.mini-calendar-day.selected');
+                if (selectedDay) {
+                    const day = parseInt(selectedDay.textContent);
+                    const selectedDate = new Date(currentYear, currentMonth, day);
+                    document.getElementById('event-date').value = selectedDate.toISOString().split('T')[0];
+                } else {
+                    // Si no hay día seleccionado, usar hoy
+                    document.getElementById('event-date').value = new Date().toISOString().split('T')[0];
+                }
+            }
+            
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeEventModal() {
+            document.getElementById('eventModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // Manejar el envío del formulario de eventos
+        document.getElementById('event-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const eventId = form.dataset.eventId;
+            const eventData = {
+                id: eventId || Date.now(),
+                title: document.getElementById('event-title').value,
+                date: document.getElementById('event-date').value,
+                time: document.getElementById('event-time').value,
+                description: document.getElementById('event-description').value,
+                type: document.getElementById('event-type').value,
+                important: document.getElementById('event-important').checked
+            };
+            
+            if (eventId) {
+                // Actualizar evento existente
+                const index = events.findIndex(e => e.id == eventId);
+                if (index !== -1) {
+                    events[index] = eventData;
+                    showToast('Evento actualizado exitosamente', 'success');
+                }
+            } else {
+                // Agregar nuevo evento
+                events.push(eventData);
+                showToast('Evento agregado exitosamente', 'success');
+            }
+            
+            // Volver a renderizar el calendario y eventos
+            renderMiniCalendar(currentMonth, currentYear);
+            renderEventCards();
+            closeEventModal();
+        });
+
+        function deleteEvent(eventId) {
+            if (confirm('¿Estás seguro de que deseas eliminar este evento?')) {
+                events = events.filter(event => event.id != eventId);
+                showToast('Evento eliminado exitosamente', 'success');
+                
+                // Volver a renderizar el calendario y eventos
+                renderMiniCalendar(currentMonth, currentYear);
+                renderEventCards();
+            }
+        }
+
+        // Funciones para el modal de pagos
+        function openPaymentModal() {
+            const modal = document.getElementById('paymentModal');
+            document.getElementById('payment-modal-title').innerHTML = '<i class="fas fa-dollar-sign"></i> Agregar Nuevo Pago';
+            
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // Manejar el envío del formulario de pagos
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const studentName = document.getElementById('payment-student').value;
+            const course = document.getElementById('payment-course').value;
+            const amount = document.getElementById('payment-amount').value;
+            const date = document.getElementById('payment-date').value;
+            const method = document.getElementById('payment-method').value;
+            const notes = document.getElementById('payment-notes').value;
+            
+            showToast(`Pago de $${amount} registrado para ${studentName} en el curso ${course}`, 'success');
+            
+            // Aquí podrías agregar la lógica para guardar el pago en tu base de datos
+            
+            closePaymentModal();
+        });
+
+        // Funciones para el modal de certificados
+        function openCertificateModal() {
+            document.getElementById('certificateModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCertificateModal() {
+            document.getElementById('certificateModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function selectCertificateTemplate(element) {
+            document.querySelectorAll('.certificate-template').forEach(template => {
+                template.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        // Manejar el envío del formulario de certificados
+        document.getElementById('certificate-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const student = document.getElementById('certificate-student').value;
+            const course = document.getElementById('certificate-course').value;
+            const date = document.getElementById('certificate-date').value;
+            const message = document.getElementById('certificate-message').value;
+            
+            showToast(`Certificado generado para ${student} en el curso ${course}`, 'success');
+            
+            // Aquí podrías agregar la lógica para generar el certificado
+            
+            closeCertificateModal();
+            
+            // Actualizar la lista de certificados
+            if (currentSection === 'certificados') {
+                showSection('certificados');
+            }
+        });
+
+        // Funciones para el modo oscuro
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            updateColorPickerBorder();
+        }
+
+        // Función para seleccionar un color predefinido
+        function selectColor(type, color) {
+            // Actualizar el color seleccionado
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            
+            // Aplicar el nuevo color principal
+            applyPrimaryColor(color);
+            
+            // Guardar la configuración
+            saveColorSettings(color);
+            
+            showToast(`Color principal cambiado`, 'success');
+        }
+
+        // Función para aplicar un color personalizado
+        function applyCustomColor(color) {
+            // Aplicar el nuevo color principal
+            applyPrimaryColor(color);
+            
+            // Guardar la configuración
+            saveColorSettings(color);
+            
+            showToast(`Color personalizado aplicado`, 'success');
+        }
+
+        // Función para aplicar el color principal a la interfaz
+        function applyPrimaryColor(color) {
+            // Generar la paleta de colores basada en el color principal
+            const primaryColor = hexToRgb(color);
+            
+            // Actualizar las variables CSS
+            document.documentElement.style.setProperty('--primary-500', color);
+            document.documentElement.style.setProperty('--primary-600', darkenColor(color, 0.1));
+            document.documentElement.style.setProperty('--primary-700', darkenColor(color, 0.2));
+            document.documentElement.style.setProperty('--primary-400', lightenColor(color, 0.1));
+            document.documentElement.style.setProperty('--primary-300', lightenColor(color, 0.2));
+            document.documentElement.style.setProperty('--primary-200', lightenColor(color, 0.3));
+            document.documentElement.style.setProperty('--primary-100', lightenColor(color, 0.4));
+            document.documentElement.style.setProperty('--primary-50', lightenColor(color, 0.5));
+        }
+
+        // Función para oscurecer un color
+        function darkenColor(color, amount) {
+            const rgb = hexToRgb(color);
+            const r = Math.max(0, rgb.r - Math.round(255 * amount));
+            const g = Math.max(0, rgb.g - Math.round(255 * amount));
+            const b = Math.max(0, rgb.b - Math.round(255 * amount));
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        // Función para aclarar un color
+        function lightenColor(color, amount) {
+            const rgb = hexToRgb(color);
+            const r = Math.min(255, rgb.r + Math.round(255 * amount));
+            const g = Math.min(255, rgb.g + Math.round(255 * amount));
+            const b = Math.min(255, rgb.b + Math.round(255 * amount));
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        // Función para convertir HEX a RGB
+        function hexToRgb(hex) {
+            // Eliminar el # si está presente
+            hex = hex.replace('#', '');
+            
+            // Convertir a valores RGB
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
+            
+            return { r, g, b };
+        }
+
+        // Función para guardar la configuración de color
+        function saveColorSettings(color) {
+            const settings = {
+                primaryColor: color,
+                darkMode: document.body.classList.contains('dark-mode')
+            };
+            localStorage.setItem('appSettings', JSON.stringify(settings));
+        }
+
+        // Función para cargar la configuración guardada
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('appSettings');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                
+                // Aplicar modo oscuro
+                if (settings.darkMode) {
+                    document.body.classList.add('dark-mode');
+                    document.getElementById('dark-mode-toggle').checked = true;
+                }
+                
+                // Aplicar color principal
+                if (settings.primaryColor) {
+                    applyPrimaryColor(settings.primaryColor);
+                    updateColorPickerBorder();
+                }
+            }
+        }
+
+        // Función para actualizar el borde del color picker según el modo oscuro
+        function updateColorPickerBorder() {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const colorOptions = document.querySelectorAll('.color-option');
+            
+            colorOptions.forEach(option => {
+                if (option.classList.contains('selected')) {
+                    option.style.borderColor = isDarkMode ? '#e5e7eb' : '#111827';
+                }
+            });
+        }
+
+        // Verificar preferencia de modo oscuro al cargar
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('dark-mode-toggle').checked = true;
+        }
+
+        // Función para cargar una copia de seguridad
+function loadBackup(file) {
+    if (!file) return;
+    
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+        try {
+            const backupData = JSON.parse(e.target.result);
+            
+            // Validar que el archivo tenga la estructura esperada
+            if (!backupData.cursos || !backupData.estudiantes || !backupData.instructores || !backupData.pagos) {
+                showToast('El archivo no es una copia de seguridad válida', 'error');
+                return;
+            }
+            
+            // Confirmar con el usuario antes de sobrescribir los datos
+            if (confirm('¿Estás seguro de que deseas restaurar esta copia de seguridad? Todos los datos actuales serán reemplazados.')) {
+                // Restaurar los datos (en una aplicación real aquí harías la lógica de restauración)
+                appData.cursos = backupData.cursos || [];
+                appData.estudiantes = backupData.estudiantes || [];
+                appData.instructores = backupData.instructores || [];
+                appData.pagos = backupData.pagos || [];
+                appData.configuracion = backupData.configuracion || {};
+                events = backupData.eventos || [];
+                
+                // Mostrar notificación de éxito
+                showToast('Copia de seguridad cargada exitosamente', 'success');
+                
+                // Recargar la vista actual para reflejar los cambios
+                showSection(currentSection);
+            }
+        } catch (error) {
+            console.error('Error al cargar la copia de seguridad:', error);
+            showToast('Error al cargar la copia de seguridad. El archivo podría estar corrupto.', 'error');
+        }
+    };
+    
+    reader.onerror = function() {
+        showToast('Error al leer el archivo', 'error');
+    };
+    
+    reader.readAsText(file);
+}
+
+// Funciones para la sección de reportes
+ 
+function generateReport(type) {
+    let reportData = [];
+    let reportTitle = '';
+    
+    switch(type) {
+        case 'courses':
+            reportData = appData.cursos.map(course => ({
+                ID: course.id,
+                Nombre: course.nombre,
+                Instructor: course.instructor,
+                Estudiantes: course.estudiantes,
+                Precio: `$${course.precio}`,
+                Estado: course.estado === 'activo' ? 'Activo' : 'Inactivo'
+            }));
+            reportTitle = 'Reporte de Cursos';
+            break;
+            
+        case 'students':
+            reportData = appData.estudiantes.map(student => ({
+                ID: student.id,
+                Nombre: student.nombre,
+                Email: student.email,
+                Teléfono: student.telefono,
+                Cursos: student.cursos.join(', '),
+                Estado: student.estado === 'activo' ? 'Activo' : 'Inactivo'
+            }));
+            reportTitle = 'Reporte de Estudiantes';
+            break;
+            
+        case 'financial':
+            reportData = appData.pagos.map(payment => ({
+                ID: payment.id,
+                Estudiante: payment.estudiante,
+                Curso: payment.curso,
+                Fecha: payment.fecha,
+                Monto: `$${payment.monto}`,
+                Método: payment.metodo,
+                Estado: payment.estado === 'pagado' ? 'Pagado' : 'Pendiente'
+            }));
+            reportTitle = 'Reporte Financiero';
+            break;
+            
+        case 'certificates':
+            // Datos de ejemplo para certificados
+            reportData = [
+                { ID: 'CERT-001', Estudiante: 'Ana López', Curso: 'HTML5 Moderno', Fecha: '2023-06-15', Estado: 'Emitido' },
+                { ID: 'CERT-002', Estudiante: 'Pedro Martínez', Curso: 'Diseño Web CSS3', Fecha: '2023-06-10', Estado: 'Emitido' }
+            ];
+            reportTitle = 'Reporte de Certificados';
+            break;
+            
+        default:
+            // Reporte completo
+            reportData = [
+                { Tipo: 'Cursos', Cantidad: appData.cursos.length },
+                { Tipo: 'Estudiantes', Cantidad: appData.estudiantes.length },
+                { Tipo: 'Instructores', Cantidad: appData.instructores.length },
+                { Tipo: 'Ingresos Totales', Cantidad: `$${appData.pagos.reduce((sum, p) => sum + p.monto, 0)}` }
+            ];
+            reportTitle = 'Reporte Completo del Sistema';
+    }
+    
+    // Actualizar la vista previa del reporte
+    updateReportPreview(reportData, reportTitle);
+    
+    // Eliminamos el toast de notificación
+    // showToast(`Reporte de ${reportTitle} generado`, 'success');
+}          
+      
+           
+            
+    
+    
+
+function updateReportPreview(data, title) {
+    const tableBody = document.querySelector('#report-table tbody');
+    tableBody.innerHTML = '';
+    
+    if (data.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td colspan="5" class="text-center text-muted">No hay datos para mostrar</td>`;
+        tableBody.appendChild(row);
+        return;
+    }
+    
+    // Obtener las columnas del primer elemento
+    const columns = Object.keys(data[0]);
+    
+    // Actualizar encabezados de la tabla
+    const tableHead = document.querySelector('#report-table thead');
+    tableHead.innerHTML = '';
+    const headerRow = document.createElement('tr');
+    
+    columns.forEach(col => {
+        const th = document.createElement('th');
+        th.textContent = col;
+        headerRow.appendChild(th);
+    });
+    
+    tableHead.appendChild(headerRow);
+    
+    // Llenar la tabla con datos
+    data.forEach(item => {
+        const row = document.createElement('tr');
+        
+        columns.forEach(col => {
+            const td = document.createElement('td');
+            td.textContent = item[col];
+            row.appendChild(td);
+        });
+        
+        tableBody.appendChild(row);
+    });
+}
+
+function exportToExcel() {
+    // Simular exportación a Excel
+    showToast('Datos exportados a Excel correctamente', 'success');
+}
+
+function generateCourseStats() {
+    // Mostrar estadísticas de cursos
+    showToast('Gráfico de estadísticas de cursos generado', 'success');
+}
+
+function generateStudentStats() {
+    // Mostrar estadísticas de estudiantes
+    showToast('Gráfico de estadísticas de estudiantes generado', 'success');
+}
+
+function showFinancialChart() {
+    // Mostrar gráfico financiero
+    showToast('Gráfico de tendencias financieras mostrado', 'success');
+}
+
+function filterCertificates() {
+    // Filtrar certificados
+    showToast('Filtros aplicados a certificados', 'success');
+}
+
+function applyFilters() {
+    // Aplicar filtros seleccionados
+    const fromDate = document.getElementById('report-date-from').value;
+    const toDate = document.getElementById('report-date-to').value;
+    const course = document.getElementById('report-course').value;
+    const status = document.getElementById('report-status').value;
+    
+    showToast(`Filtros aplicados: ${fromDate ? 'Desde ' + fromDate : ''} ${toDate ? 'hasta ' + toDate : ''} ${course ? 'Curso: ' + course : ''} ${status ? 'Estado: ' + status : ''}`, 'success');
+}
+
+function printReport() {
+    // Simular impresión del reporte
+    showToast('Reporte enviado a impresión', 'success');
+}
+
+function downloadReport() {
+    // Simular descarga del reporte
+    showToast('Reporte descargado correctamente', 'success');
+}
+
+function togglePasswordVisibility(inputId) {
+    const input = document.getElementById(inputId);
+    const icon = event.currentTarget.querySelector('i');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+function openNewMessageModal() {
+    const modal = document.getElementById('messageModal');
+    if (!modal) {
+        // Crear el modal dinámicamente si no existe
+        createMessageModal();
+    }
+    document.getElementById('messageModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function createMessageModal() {
+    const modalHTML = `
+    <div class="modal" id="messageModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2><i class="fas fa-envelope"></i> Nuevo Mensaje</h2>
+                <button class="close-modal" onclick="closeMessageModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="message-form" class="modal-form">
+                <div class="form-group">
+                    <label for="message-recipient">Destinatario</label>
+                    <select id="message-recipient" class="form-control" name="message-recipient" required>
+                        <option value="">Seleccionar destinatario</option>
+                        <option value="all">Todos los estudiantes</option>
+                        <option value="course">Estudiantes de un curso</option>
+                        <option value="individual">Individual</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="course-selector-group" style="display: none;">
+                    <label for="message-course">Curso</label>
+                    <select id="message-course" class="form-control" name="message-course">
+                        <option value="">Seleccionar curso</option>
+                        <option value="HTML5 Moderno">HTML5 Moderno</option>
+                        <option value="Diseño Web CSS3">Diseño Web CSS3</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="individual-selector-group" style="display: none;">
+                    <label for="message-individual">Estudiante</label>
+                    <select id="message-individual" class="form-control" name="message-individual">
+                        <option value="">Seleccionar estudiante</option>
+                        <option value="Ana López">Ana López</option>
+                        <option value="Pedro Martínez">Pedro Martínez</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message-subject">Asunto</label>
+                    <input type="text" id="message-subject" class="form-control" name="message-subject" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message-content">Contenido</label>
+                    <textarea id="message-content" class="form-control" name="message-content" rows="8" required></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeMessageModal()">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-paper-plane"></i> Enviar Mensaje
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Configurar el evento para mostrar/ocultar selectores según el tipo de destinatario
+    document.getElementById('message-recipient').addEventListener('change', function() {
+        const recipientType = this.value;
+        document.getElementById('course-selector-group').style.display = 'none';
+        document.getElementById('individual-selector-group').style.display = 'none';
+        
+        if (recipientType === 'course') {
+            document.getElementById('course-selector-group').style.display = 'block';
+        } else if (recipientType === 'individual') {
+            document.getElementById('individual-selector-group').style.display = 'block';
+        }
+    });
+    
+    // Manejar el envío del formulario
+    document.getElementById('message-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const recipient = document.getElementById('message-recipient').value;
+        const subject = document.getElementById('message-subject').value;
+        let recipientName = '';
+        
+        if (recipient === 'course') {
+            recipientName = document.getElementById('message-course').value;
+        } else if (recipient === 'individual') {
+            recipientName = document.getElementById('message-individual').value;
+        } else {
+            recipientName = 'Todos los estudiantes';
+        }
+        
+        showToast(`Mensaje "${subject}" enviado a ${recipientName}`, 'success');
+        closeMessageModal();
+    });
+}
+
+function closeMessageModal() {
+    document.getElementById('messageModal').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+    </script>
+</body>
+</html>
